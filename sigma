@@ -1,0 +1,116 @@
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+-- Create the ImageLabel for the background
+local backgroundImage = Instance.new("ImageLabel")
+backgroundImage.Size = UDim2.new(0.5, 0, 0.5, 0)  -- Set smaller size
+backgroundImage.Position = UDim2.new(0.25, 0, 0.25, 0)  -- Center it
+backgroundImage.Image = "rbxassetid://82100925005884"  -- Your asset ID
+backgroundImage.BackgroundTransparency = 1
+backgroundImage.ZIndex = 0  -- Set ZIndex to 0 to place it behind other UI elements
+backgroundImage.Parent = screenGui
+
+-- Create the frame for the key system
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+frame.Position = UDim2.new(0.25, 0, 0.25, 0)
+frame.BackgroundTransparency = 1
+frame.Parent = screenGui
+
+-- Create the text box for key input
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0.8, 0, 0.1, 0)
+textBox.Position = UDim2.new(0.1, 0, 0.65, 0)
+textBox.PlaceholderText = "Enter Key"
+textBox.Text = ""
+textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+textBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+textBox.Parent = frame
+
+-- Create the validation button
+local validateButton = Instance.new("TextButton")
+validateButton.Size = UDim2.new(0.8, 0, 0.1, 0)
+validateButton.Position = UDim2.new(0.1, 0, 0.8, 0)
+validateButton.Text = "Validate Key"
+validateButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+validateButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+validateButton.Parent = frame
+
+-- The key to validate
+local correctKey = "AvexDeHub"
+
+-- Function to validate key and redirect
+local function validateKey()
+    if textBox.Text == correctKey then
+        -- Key is correct, close the GUI and execute the script
+        screenGui:Destroy()
+        
+        -- Execute the redirecting script
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AvexRxT/Avex-Script/main/Avex%20HQ"))()
+    else
+        -- Invalid key entered, notify user
+        local errorMessage = Instance.new("TextLabel")
+        errorMessage.Size = UDim2.new(0.8, 0, 0.1, 0)
+        errorMessage.Position = UDim2.new(0.1, 0, 0.9, 0)
+        errorMessage.Text = "Invalid key! Try again."
+        errorMessage.TextColor3 = Color3.fromRGB(255, 0, 0)
+        errorMessage.BackgroundTransparency = 1
+        errorMessage.Parent = frame
+
+        -- Clear the error message after 2 seconds
+        wait(2)
+        errorMessage:Destroy()
+    end
+end
+
+-- Create UICorner for rounded edges on the validate button
+local corner1 = Instance.new("UICorner")
+corner1.CornerRadius = UDim.new(0.1, 0)
+corner1.Parent = validateButton
+
+-- Create the close button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+closeButton.Position = UDim2.new(0.85, 0, 0.05, 0)  -- Position it at the top-right corner
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.BackgroundTransparency = 1
+closeButton.TextScaled = true
+closeButton.ZIndex = 2  -- Make sure the close button is on top of the background
+closeButton.Parent = screenGui
+
+-- Create UICorner for rounded edges on the close button
+local corner2 = Instance.new("UICorner")
+corner2.CornerRadius = UDim.new(1, 0)
+corner2.Parent = closeButton
+
+-- Function to close the GUI when the close button is clicked
+local function closeGui()
+    screenGui:Destroy()  -- Destroy the ScreenGui to close it
+end
+
+-- Connect the button click to the close function
+closeButton.MouseButton1Click:Connect(closeGui)
+
+-- Connect the button click to validate function
+validateButton.MouseButton1Click:Connect(validateKey)
+
+-- Create a border effect for RGB on the close button
+local rgbFrame = Instance.new("Frame")
+rgbFrame.Size = UDim2.new(1, 0, 1, 0)
+rgbFrame.Position = UDim2.new(0, 0, 0, 0)
+rgbFrame.BackgroundTransparency = 1
+rgbFrame.Parent = closeButton
+
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Rotation = 45
+uiGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(0.2, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(0.4, Color3.fromRGB(0, 0, 255)),
+    ColorSequenceKeypoint.new(0.6, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(0.8, Color3.fromRGB(255, 0, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 255)),
+})
+uiGradient.Parent = rgbFrame
